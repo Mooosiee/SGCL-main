@@ -1,0 +1,349 @@
+Tue 03 Nov 2026 10:48:41 INFO  
+General Hyper Parameters:
+gpu_id = 0
+use_gpu = True
+seed = 2020
+state = INFO
+reproducibility = True
+data_path = dataset/amazon-toys-games
+checkpoint_dir = saved
+show_progress = False
+save_dataset = False
+dataset_save_path = None
+save_dataloaders = True
+dataloaders_save_path = dataloader/
+log_wandb = False
+
+Training Hyper Parameters:
+epochs = 300
+train_batch_size = 1024
+learner = adam
+learning_rate = 0.001
+train_neg_sample_args = {'distribution': 'uniform', 'sample_num': 1, 'alpha': 1.0, 'dynamic': False, 'candidate_num': 0}
+eval_step = 1
+stopping_step = 10
+clip_grad_norm = None
+weight_decay = 1e-06
+loss_decimal_place = 4
+
+Evaluation Hyper Parameters:
+eval_args = {'split': {'RS': [0.8, 0.1, 0.1]}, 'order': 'RO', 'group_by': 'user', 'mode': {'valid': 'full', 'test': 'full'}}
+repeatable = False
+metrics = ['Recall', 'NDCG', 'Hit', 'Precision', 'MRR']
+topk = [20, 50]
+valid_metric = NDCG@20
+valid_metric_bigger = True
+eval_batch_size = 4096
+metric_decimal_place = 4
+
+Dataset Hyper Parameters:
+field_separator = 	
+seq_separator =  
+USER_ID_FIELD = user_id
+ITEM_ID_FIELD = item_id
+RATING_FIELD = rating
+TIME_FIELD = timestamp
+seq_len = None
+LABEL_FIELD = label
+threshold = None
+NEG_PREFIX = neg_
+load_col = {'inter': ['user_id', 'item_id']}
+unload_col = None
+unused_col = None
+additional_feat_suffix = None
+rm_dup_inter = None
+val_interval = None
+filter_inter_by_user_or_item = True
+user_inter_num_interval = [5,inf)
+item_inter_num_interval = [5,inf)
+alias_of_user_id = None
+alias_of_item_id = None
+alias_of_entity_id = None
+alias_of_relation_id = None
+preload_weight = None
+normalize_field = None
+normalize_all = None
+ITEM_LIST_LENGTH_FIELD = item_length
+LIST_SUFFIX = _list
+MAX_ITEM_LIST_LENGTH = 50
+POSITION_FIELD = position_id
+HEAD_ENTITY_ID_FIELD = head_id
+TAIL_ENTITY_ID_FIELD = tail_id
+RELATION_ID_FIELD = relation_id
+ENTITY_ID_FIELD = entity_id
+benchmark_filename = None
+
+Other Hyper Parameters: 
+worker = 0
+wandb_project = recbole
+shuffle = True
+require_pow = False
+enable_amp = False
+enable_scaler = False
+transform = None
+numerical_features = []
+discretization = None
+kg_reverse_r = False
+entity_kg_num_interval = [0,inf)
+relation_kg_num_interval = [0,inf)
+MODEL_TYPE = ModelType.GENERAL
+embedding_size = 64
+n_layers = 3
+temperature = 0.2
+mask_mode = all
+pop_beta = 0.5
+pop_alpha = 0.0
+cross_weight = 0.0
+layer_weight_mode = decay
+MODEL_INPUT_TYPE = InputType.PAIRWISE
+eval_type = EvaluatorType.RANKING
+single_spec = True
+local_rank = 0
+device = cpu
+valid_neg_sample_args = {'distribution': 'uniform', 'sample_num': 'none'}
+test_neg_sample_args = {'distribution': 'uniform', 'sample_num': 'none'}
+
+
+Tue 03 Nov 2026 10:49:13 INFO  amazon-toys-games
+The number of users: 19413
+Average actions of users: 8.633680197815783
+The number of items: 11925
+Average actions of items: 14.055434417980543
+The number of inters: 167597
+The sparsity of the dataset: 99.92760389550713%
+Remain Fields: ['user_id', 'item_id']
+Tue 03 Nov 2026 10:49:16 INFO  Saving split dataloaders into: [saved\amazon-toys-games-for-SGCL-dataloader.pth]
+Tue 03 Nov 2026 10:49:23 INFO  [Training]: train_batch_size = [1024] train_neg_sample_args: [{'distribution': 'uniform', 'sample_num': 1, 'alpha': 1.0, 'dynamic': False, 'candidate_num': 0}]
+Tue 03 Nov 2026 10:49:23 INFO  [Evaluation]: eval_batch_size = [4096] eval_args: [{'split': {'RS': [0.8, 0.1, 0.1]}, 'order': 'RO', 'group_by': 'user', 'mode': {'valid': 'full', 'test': 'full'}}]
+Tue 03 Nov 2026 10:49:23 INFO  SGCL(
+  (user_embedding): Embedding(19413, 64)
+  (item_embedding): Embedding(11925, 64)
+  (gcn_conv): LightGCNConv(64)
+  (mf_loss): BPRLoss()
+  (reg_loss): EmbLoss()
+)
+Trainable parameters: 2005632
+Tue 03 Nov 2026 10:50:12 INFO  epoch 0 training [time: 48.90s, train loss: 714833.4014]
+Tue 03 Nov 2026 10:50:47 INFO  epoch 0 evaluating [time: 35.49s, valid_score: 0.042700]
+Tue 03 Nov 2026 10:50:47 INFO  valid result: 
+recall@20 : 0.0891    recall@50 : 0.1334    ndcg@20 : 0.0427    ndcg@50 : 0.0516    hit@20 : 0.0947    hit@50 : 0.1414    precision@20 : 0.0048    precision@50 : 0.0029    mrr@20 : 0.0306    mrr@50 : 0.0321
+Tue 03 Nov 2026 10:50:47 INFO  Saving current: saved\SGCL-Nov-03-2026_10-49-23.pth
+Tue 03 Nov 2026 10:51:41 INFO  epoch 1 training [time: 53.73s, train loss: 590934.7974]
+Tue 03 Nov 2026 10:52:10 INFO  epoch 1 evaluating [time: 28.88s, valid_score: 0.052100]
+Tue 03 Nov 2026 10:52:10 INFO  valid result: 
+recall@20 : 0.1092    recall@50 : 0.1603    ndcg@20 : 0.0521    ndcg@50 : 0.0625    hit@20 : 0.1153    hit@50 : 0.1696    precision@20 : 0.0059    precision@50 : 0.0035    mrr@20 : 0.0372    mrr@50 : 0.0389
+Tue 03 Nov 2026 10:52:10 INFO  Saving current: saved\SGCL-Nov-03-2026_10-49-23.pth
+Tue 03 Nov 2026 10:52:58 INFO  epoch 2 training [time: 48.12s, train loss: 567502.0239]
+Tue 03 Nov 2026 10:53:30 INFO  epoch 2 evaluating [time: 31.84s, valid_score: 0.056000]
+Tue 03 Nov 2026 10:53:30 INFO  valid result: 
+recall@20 : 0.1174    recall@50 : 0.1736    ndcg@20 : 0.056    ndcg@50 : 0.0674    hit@20 : 0.1241    hit@50 : 0.1828    precision@20 : 0.0063    precision@50 : 0.0038    mrr@20 : 0.0401    mrr@50 : 0.0419
+Tue 03 Nov 2026 10:53:30 INFO  Saving current: saved\SGCL-Nov-03-2026_10-49-23.pth
+Tue 03 Nov 2026 10:54:26 INFO  epoch 3 training [time: 55.85s, train loss: 556824.8257]
+Tue 03 Nov 2026 10:55:01 INFO  epoch 3 evaluating [time: 35.48s, valid_score: 0.058200]
+Tue 03 Nov 2026 10:55:01 INFO  valid result: 
+recall@20 : 0.1232    recall@50 : 0.1798    ndcg@20 : 0.0582    ndcg@50 : 0.0696    hit@20 : 0.1301    hit@50 : 0.1894    precision@20 : 0.0067    precision@50 : 0.0039    mrr@20 : 0.0413    mrr@50 : 0.0431
+Tue 03 Nov 2026 10:55:01 INFO  Saving current: saved\SGCL-Nov-03-2026_10-49-23.pth
+Tue 03 Nov 2026 10:55:52 INFO  epoch 4 training [time: 50.91s, train loss: 550716.6230]
+Tue 03 Nov 2026 10:56:26 INFO  epoch 4 evaluating [time: 34.11s, valid_score: 0.060000]
+Tue 03 Nov 2026 10:56:26 INFO  valid result: 
+recall@20 : 0.1271    recall@50 : 0.184    ndcg@20 : 0.06    ndcg@50 : 0.0715    hit@20 : 0.1343    hit@50 : 0.1941    precision@20 : 0.0069    precision@50 : 0.004    mrr@20 : 0.0425    mrr@50 : 0.0444
+Tue 03 Nov 2026 10:56:26 INFO  Saving current: saved\SGCL-Nov-03-2026_10-49-23.pth
+Tue 03 Nov 2026 10:57:18 INFO  epoch 5 training [time: 51.37s, train loss: 546568.0103]
+Tue 03 Nov 2026 10:57:47 INFO  epoch 5 evaluating [time: 29.53s, valid_score: 0.061100]
+Tue 03 Nov 2026 10:57:47 INFO  valid result: 
+recall@20 : 0.1287    recall@50 : 0.1875    ndcg@20 : 0.0611    ndcg@50 : 0.073    hit@20 : 0.1356    hit@50 : 0.1974    precision@20 : 0.0069    precision@50 : 0.0041    mrr@20 : 0.0435    mrr@50 : 0.0454
+Tue 03 Nov 2026 10:57:47 INFO  Saving current: saved\SGCL-Nov-03-2026_10-49-23.pth
+Tue 03 Nov 2026 10:58:38 INFO  epoch 6 training [time: 51.12s, train loss: 543566.1790]
+Tue 03 Nov 2026 10:59:11 INFO  epoch 6 evaluating [time: 32.53s, valid_score: 0.061700]
+Tue 03 Nov 2026 10:59:11 INFO  valid result: 
+recall@20 : 0.1301    recall@50 : 0.1878    ndcg@20 : 0.0617    ndcg@50 : 0.0734    hit@20 : 0.1373    hit@50 : 0.1975    precision@20 : 0.007    precision@50 : 0.0041    mrr@20 : 0.0439    mrr@50 : 0.0458
+Tue 03 Nov 2026 10:59:11 INFO  Saving current: saved\SGCL-Nov-03-2026_10-49-23.pth
+Tue 03 Nov 2026 11:00:05 INFO  epoch 7 training [time: 53.62s, train loss: 541268.2141]
+Tue 03 Nov 2026 11:00:41 INFO  epoch 7 evaluating [time: 35.98s, valid_score: 0.062100]
+Tue 03 Nov 2026 11:00:41 INFO  valid result: 
+recall@20 : 0.1313    recall@50 : 0.1891    ndcg@20 : 0.0621    ndcg@50 : 0.0738    hit@20 : 0.1385    hit@50 : 0.1991    precision@20 : 0.0071    precision@50 : 0.0041    mrr@20 : 0.0441    mrr@50 : 0.046
+Tue 03 Nov 2026 11:00:41 INFO  Saving current: saved\SGCL-Nov-03-2026_10-49-23.pth
+Tue 03 Nov 2026 11:01:28 INFO  epoch 8 training [time: 47.35s, train loss: 539366.3733]
+Tue 03 Nov 2026 11:01:59 INFO  epoch 8 evaluating [time: 30.72s, valid_score: 0.062400]
+Tue 03 Nov 2026 11:01:59 INFO  valid result: 
+recall@20 : 0.1323    recall@50 : 0.1911    ndcg@20 : 0.0624    ndcg@50 : 0.0744    hit@20 : 0.1395    hit@50 : 0.2009    precision@20 : 0.0071    precision@50 : 0.0042    mrr@20 : 0.0442    mrr@50 : 0.0461
+Tue 03 Nov 2026 11:01:59 INFO  Saving current: saved\SGCL-Nov-03-2026_10-49-23.pth
+Tue 03 Nov 2026 11:02:43 INFO  epoch 9 training [time: 43.93s, train loss: 537809.4819]
+Tue 03 Nov 2026 11:03:13 INFO  epoch 9 evaluating [time: 30.32s, valid_score: 0.062700]
+Tue 03 Nov 2026 11:03:13 INFO  valid result: 
+recall@20 : 0.1327    recall@50 : 0.1917    ndcg@20 : 0.0627    ndcg@50 : 0.0747    hit@20 : 0.14    hit@50 : 0.2017    precision@20 : 0.0072    precision@50 : 0.0042    mrr@20 : 0.0443    mrr@50 : 0.0463
+Tue 03 Nov 2026 11:03:13 INFO  Saving current: saved\SGCL-Nov-03-2026_10-49-23.pth
+Tue 03 Nov 2026 11:03:58 INFO  epoch 10 training [time: 44.45s, train loss: 536509.4321]
+Tue 03 Nov 2026 11:04:26 INFO  epoch 10 evaluating [time: 28.49s, valid_score: 0.062900]
+Tue 03 Nov 2026 11:04:26 INFO  valid result: 
+recall@20 : 0.1331    recall@50 : 0.1935    ndcg@20 : 0.0629    ndcg@50 : 0.0752    hit@20 : 0.1403    hit@50 : 0.2037    precision@20 : 0.0072    precision@50 : 0.0042    mrr@20 : 0.0445    mrr@50 : 0.0465
+Tue 03 Nov 2026 11:04:26 INFO  Saving current: saved\SGCL-Nov-03-2026_10-49-23.pth
+Tue 03 Nov 2026 11:05:10 INFO  epoch 11 training [time: 43.93s, train loss: 535357.6362]
+Tue 03 Nov 2026 11:05:40 INFO  epoch 11 evaluating [time: 29.78s, valid_score: 0.063100]
+Tue 03 Nov 2026 11:05:40 INFO  valid result: 
+recall@20 : 0.1336    recall@50 : 0.1941    ndcg@20 : 0.0631    ndcg@50 : 0.0753    hit@20 : 0.1409    hit@50 : 0.2043    precision@20 : 0.0072    precision@50 : 0.0042    mrr@20 : 0.0446    mrr@50 : 0.0466
+Tue 03 Nov 2026 11:05:40 INFO  Saving current: saved\SGCL-Nov-03-2026_10-49-23.pth
+Tue 03 Nov 2026 11:06:25 INFO  epoch 12 training [time: 45.28s, train loss: 534420.5710]
+Tue 03 Nov 2026 11:06:56 INFO  epoch 12 evaluating [time: 30.94s, valid_score: 0.062900]
+Tue 03 Nov 2026 11:06:56 INFO  valid result: 
+recall@20 : 0.133    recall@50 : 0.1943    ndcg@20 : 0.0629    ndcg@50 : 0.0753    hit@20 : 0.1404    hit@50 : 0.2045    precision@20 : 0.0072    precision@50 : 0.0042    mrr@20 : 0.0444    mrr@50 : 0.0465
+Tue 03 Nov 2026 11:07:42 INFO  epoch 13 training [time: 45.81s, train loss: 533553.6235]
+Tue 03 Nov 2026 11:08:13 INFO  epoch 13 evaluating [time: 31.58s, valid_score: 0.063100]
+Tue 03 Nov 2026 11:08:13 INFO  valid result: 
+recall@20 : 0.134    recall@50 : 0.1957    ndcg@20 : 0.0631    ndcg@50 : 0.0757    hit@20 : 0.1411    hit@50 : 0.2058    precision@20 : 0.0072    precision@50 : 0.0043    mrr@20 : 0.0446    mrr@50 : 0.0467
+Tue 03 Nov 2026 11:08:14 INFO  Saving current: saved\SGCL-Nov-03-2026_10-49-23.pth
+Tue 03 Nov 2026 11:08:59 INFO  epoch 14 training [time: 45.64s, train loss: 532763.0508]
+Tue 03 Nov 2026 11:09:30 INFO  epoch 14 evaluating [time: 31.30s, valid_score: 0.063100]
+Tue 03 Nov 2026 11:09:30 INFO  valid result: 
+recall@20 : 0.1336    recall@50 : 0.1958    ndcg@20 : 0.0631    ndcg@50 : 0.0757    hit@20 : 0.1407    hit@50 : 0.2061    precision@20 : 0.0072    precision@50 : 0.0043    mrr@20 : 0.0446    mrr@50 : 0.0467
+Tue 03 Nov 2026 11:09:31 INFO  Saving current: saved\SGCL-Nov-03-2026_10-49-23.pth
+Tue 03 Nov 2026 11:10:17 INFO  epoch 15 training [time: 46.16s, train loss: 532085.9072]
+Tue 03 Nov 2026 11:10:48 INFO  epoch 15 evaluating [time: 30.97s, valid_score: 0.063400]
+Tue 03 Nov 2026 11:10:48 INFO  valid result: 
+recall@20 : 0.1341    recall@50 : 0.1969    ndcg@20 : 0.0634    ndcg@50 : 0.0762    hit@20 : 0.1414    hit@50 : 0.2071    precision@20 : 0.0072    precision@50 : 0.0043    mrr@20 : 0.0449    mrr@50 : 0.047
+Tue 03 Nov 2026 11:10:48 INFO  Saving current: saved\SGCL-Nov-03-2026_10-49-23.pth
+Tue 03 Nov 2026 11:11:33 INFO  epoch 16 training [time: 45.57s, train loss: 531482.9639]
+Tue 03 Nov 2026 11:12:04 INFO  epoch 16 evaluating [time: 30.67s, valid_score: 0.063500]
+Tue 03 Nov 2026 11:12:04 INFO  valid result: 
+recall@20 : 0.1342    recall@50 : 0.1973    ndcg@20 : 0.0635    ndcg@50 : 0.0763    hit@20 : 0.1416    hit@50 : 0.2075    precision@20 : 0.0072    precision@50 : 0.0043    mrr@20 : 0.045    mrr@50 : 0.0471
+Tue 03 Nov 2026 11:12:04 INFO  Saving current: saved\SGCL-Nov-03-2026_10-49-23.pth
+Tue 03 Nov 2026 11:12:49 INFO  epoch 17 training [time: 44.83s, train loss: 530909.6917]
+Tue 03 Nov 2026 11:13:21 INFO  epoch 17 evaluating [time: 32.46s, valid_score: 0.063300]
+Tue 03 Nov 2026 11:13:21 INFO  valid result: 
+recall@20 : 0.1332    recall@50 : 0.198    ndcg@20 : 0.0633    ndcg@50 : 0.0764    hit@20 : 0.1405    hit@50 : 0.2081    precision@20 : 0.0072    precision@50 : 0.0043    mrr@20 : 0.045    mrr@50 : 0.0471
+Tue 03 Nov 2026 11:14:11 INFO  epoch 18 training [time: 49.40s, train loss: 530386.9849]
+Tue 03 Nov 2026 11:14:47 INFO  epoch 18 evaluating [time: 36.36s, valid_score: 0.063800]
+Tue 03 Nov 2026 11:14:47 INFO  valid result: 
+recall@20 : 0.1349    recall@50 : 0.1973    ndcg@20 : 0.0638    ndcg@50 : 0.0765    hit@20 : 0.1419    hit@50 : 0.2075    precision@20 : 0.0073    precision@50 : 0.0043    mrr@20 : 0.0452    mrr@50 : 0.0472
+Tue 03 Nov 2026 11:14:47 INFO  Saving current: saved\SGCL-Nov-03-2026_10-49-23.pth
+Tue 03 Nov 2026 11:15:36 INFO  epoch 19 training [time: 48.70s, train loss: 529941.5151]
+Tue 03 Nov 2026 11:16:06 INFO  epoch 19 evaluating [time: 29.68s, valid_score: 0.063600]
+Tue 03 Nov 2026 11:16:06 INFO  valid result: 
+recall@20 : 0.1346    recall@50 : 0.1992    ndcg@20 : 0.0636    ndcg@50 : 0.0766    hit@20 : 0.1416    hit@50 : 0.2094    precision@20 : 0.0073    precision@50 : 0.0044    mrr@20 : 0.0449    mrr@50 : 0.047
+Tue 03 Nov 2026 11:16:52 INFO  epoch 20 training [time: 46.74s, train loss: 529485.1797]
+Tue 03 Nov 2026 11:17:23 INFO  epoch 20 evaluating [time: 30.77s, valid_score: 0.063500]
+Tue 03 Nov 2026 11:17:23 INFO  valid result: 
+recall@20 : 0.1346    recall@50 : 0.1988    ndcg@20 : 0.0635    ndcg@50 : 0.0765    hit@20 : 0.1416    hit@50 : 0.2091    precision@20 : 0.0072    precision@50 : 0.0043    mrr@20 : 0.0449    mrr@50 : 0.047
+Tue 03 Nov 2026 11:18:18 INFO  epoch 21 training [time: 55.41s, train loss: 529118.8132]
+Tue 03 Nov 2026 11:18:49 INFO  epoch 21 evaluating [time: 30.89s, valid_score: 0.063600]
+Tue 03 Nov 2026 11:18:49 INFO  valid result: 
+recall@20 : 0.1351    recall@50 : 0.1986    ndcg@20 : 0.0636    ndcg@50 : 0.0765    hit@20 : 0.1422    hit@50 : 0.2089    precision@20 : 0.0073    precision@50 : 0.0043    mrr@20 : 0.0448    mrr@50 : 0.0469
+Tue 03 Nov 2026 11:19:41 INFO  epoch 22 training [time: 51.60s, train loss: 528745.3340]
+Tue 03 Nov 2026 11:20:25 INFO  epoch 22 evaluating [time: 43.85s, valid_score: 0.063700]
+Tue 03 Nov 2026 11:20:25 INFO  valid result: 
+recall@20 : 0.1354    recall@50 : 0.198    ndcg@20 : 0.0637    ndcg@50 : 0.0763    hit@20 : 0.1425    hit@50 : 0.2082    precision@20 : 0.0073    precision@50 : 0.0043    mrr@20 : 0.0449    mrr@50 : 0.0469
+Tue 03 Nov 2026 11:21:24 INFO  epoch 23 training [time: 59.09s, train loss: 528368.4766]
+Tue 03 Nov 2026 11:21:57 INFO  epoch 23 evaluating [time: 32.81s, valid_score: 0.064100]
+Tue 03 Nov 2026 11:21:57 INFO  valid result: 
+recall@20 : 0.1362    recall@50 : 0.1978    ndcg@20 : 0.0641    ndcg@50 : 0.0765    hit@20 : 0.1435    hit@50 : 0.2082    precision@20 : 0.0073    precision@50 : 0.0043    mrr@20 : 0.0452    mrr@50 : 0.0473
+Tue 03 Nov 2026 11:21:57 INFO  Saving current: saved\SGCL-Nov-03-2026_10-49-23.pth
+Tue 03 Nov 2026 11:22:43 INFO  epoch 24 training [time: 45.95s, train loss: 528027.9497]
+Tue 03 Nov 2026 11:23:12 INFO  epoch 24 evaluating [time: 29.04s, valid_score: 0.063900]
+Tue 03 Nov 2026 11:23:12 INFO  valid result: 
+recall@20 : 0.1357    recall@50 : 0.1982    ndcg@20 : 0.0639    ndcg@50 : 0.0766    hit@20 : 0.143    hit@50 : 0.2084    precision@20 : 0.0073    precision@50 : 0.0043    mrr@20 : 0.0451    mrr@50 : 0.0472
+Tue 03 Nov 2026 11:23:57 INFO  epoch 25 training [time: 44.89s, train loss: 527764.5415]
+Tue 03 Nov 2026 11:24:26 INFO  epoch 25 evaluating [time: 29.53s, valid_score: 0.064100]
+Tue 03 Nov 2026 11:24:26 INFO  valid result: 
+recall@20 : 0.1364    recall@50 : 0.1983    ndcg@20 : 0.0641    ndcg@50 : 0.0766    hit@20 : 0.1435    hit@50 : 0.2085    precision@20 : 0.0074    precision@50 : 0.0043    mrr@20 : 0.0453    mrr@50 : 0.0473
+Tue 03 Nov 2026 11:24:26 INFO  Saving current: saved\SGCL-Nov-03-2026_10-49-23.pth
+Tue 03 Nov 2026 11:25:14 INFO  epoch 26 training [time: 47.33s, train loss: 527449.0435]
+Tue 03 Nov 2026 11:25:44 INFO  epoch 26 evaluating [time: 30.14s, valid_score: 0.064100]
+Tue 03 Nov 2026 11:25:44 INFO  valid result: 
+recall@20 : 0.136    recall@50 : 0.1998    ndcg@20 : 0.0641    ndcg@50 : 0.0771    hit@20 : 0.143    hit@50 : 0.2104    precision@20 : 0.0073    precision@50 : 0.0044    mrr@20 : 0.0454    mrr@50 : 0.0475
+Tue 03 Nov 2026 11:25:44 INFO  Saving current: saved\SGCL-Nov-03-2026_10-49-23.pth
+Tue 03 Nov 2026 11:26:30 INFO  epoch 27 training [time: 46.66s, train loss: 527182.3699]
+Tue 03 Nov 2026 11:27:05 INFO  epoch 27 evaluating [time: 34.86s, valid_score: 0.064200]
+Tue 03 Nov 2026 11:27:05 INFO  valid result: 
+recall@20 : 0.1366    recall@50 : 0.1997    ndcg@20 : 0.0642    ndcg@50 : 0.0769    hit@20 : 0.1435    hit@50 : 0.2098    precision@20 : 0.0074    precision@50 : 0.0044    mrr@20 : 0.0452    mrr@50 : 0.0473
+Tue 03 Nov 2026 11:27:05 INFO  Saving current: saved\SGCL-Nov-03-2026_10-49-23.pth
+Tue 03 Nov 2026 11:27:52 INFO  epoch 28 training [time: 47.10s, train loss: 526931.7061]
+Tue 03 Nov 2026 11:28:22 INFO  epoch 28 evaluating [time: 29.64s, valid_score: 0.064000]
+Tue 03 Nov 2026 11:28:22 INFO  valid result: 
+recall@20 : 0.136    recall@50 : 0.1991    ndcg@20 : 0.064    ndcg@50 : 0.0768    hit@20 : 0.143    hit@50 : 0.2094    precision@20 : 0.0073    precision@50 : 0.0043    mrr@20 : 0.0451    mrr@50 : 0.0473
+Tue 03 Nov 2026 11:29:08 INFO  epoch 29 training [time: 45.68s, train loss: 526648.7505]
+Tue 03 Nov 2026 11:29:34 INFO  epoch 29 evaluating [time: 25.78s, valid_score: 0.064100]
+Tue 03 Nov 2026 11:29:34 INFO  valid result: 
+recall@20 : 0.1368    recall@50 : 0.1992    ndcg@20 : 0.0641    ndcg@50 : 0.0767    hit@20 : 0.1438    hit@50 : 0.2096    precision@20 : 0.0074    precision@50 : 0.0044    mrr@20 : 0.045    mrr@50 : 0.047
+Tue 03 Nov 2026 11:30:11 INFO  epoch 30 training [time: 37.74s, train loss: 526377.2551]
+Tue 03 Nov 2026 11:30:37 INFO  epoch 30 evaluating [time: 25.35s, valid_score: 0.064300]
+Tue 03 Nov 2026 11:30:37 INFO  valid result: 
+recall@20 : 0.1374    recall@50 : 0.1995    ndcg@20 : 0.0643    ndcg@50 : 0.0768    hit@20 : 0.1445    hit@50 : 0.2098    precision@20 : 0.0074    precision@50 : 0.0044    mrr@20 : 0.0453    mrr@50 : 0.0473
+Tue 03 Nov 2026 11:30:37 INFO  Saving current: saved\SGCL-Nov-03-2026_10-49-23.pth
+Tue 03 Nov 2026 11:31:14 INFO  epoch 31 training [time: 37.63s, train loss: 526200.7778]
+Tue 03 Nov 2026 11:31:40 INFO  epoch 31 evaluating [time: 25.89s, valid_score: 0.064000]
+Tue 03 Nov 2026 11:31:40 INFO  valid result: 
+recall@20 : 0.1365    recall@50 : 0.1993    ndcg@20 : 0.064    ndcg@50 : 0.0767    hit@20 : 0.1435    hit@50 : 0.2096    precision@20 : 0.0074    precision@50 : 0.0044    mrr@20 : 0.045    mrr@50 : 0.0471
+Tue 03 Nov 2026 11:32:21 INFO  epoch 32 training [time: 40.78s, train loss: 525958.4402]
+Tue 03 Nov 2026 11:32:49 INFO  epoch 32 evaluating [time: 28.33s, valid_score: 0.064100]
+Tue 03 Nov 2026 11:32:49 INFO  valid result: 
+recall@20 : 0.1369    recall@50 : 0.1998    ndcg@20 : 0.0641    ndcg@50 : 0.0768    hit@20 : 0.1439    hit@50 : 0.2101    precision@20 : 0.0074    precision@50 : 0.0044    mrr@20 : 0.0451    mrr@50 : 0.0472
+Tue 03 Nov 2026 11:33:29 INFO  epoch 33 training [time: 39.67s, train loss: 525794.2849]
+Tue 03 Nov 2026 11:33:55 INFO  epoch 33 evaluating [time: 25.95s, valid_score: 0.064200]
+Tue 03 Nov 2026 11:33:55 INFO  valid result: 
+recall@20 : 0.1371    recall@50 : 0.1992    ndcg@20 : 0.0642    ndcg@50 : 0.0768    hit@20 : 0.1441    hit@50 : 0.2096    precision@20 : 0.0074    precision@50 : 0.0044    mrr@20 : 0.0452    mrr@50 : 0.0472
+Tue 03 Nov 2026 11:34:33 INFO  epoch 34 training [time: 37.78s, train loss: 525564.9805]
+Tue 03 Nov 2026 11:34:59 INFO  epoch 34 evaluating [time: 25.88s, valid_score: 0.064100]
+Tue 03 Nov 2026 11:34:59 INFO  valid result: 
+recall@20 : 0.1368    recall@50 : 0.1989    ndcg@20 : 0.0641    ndcg@50 : 0.0767    hit@20 : 0.144    hit@50 : 0.2093    precision@20 : 0.0074    precision@50 : 0.0043    mrr@20 : 0.0452    mrr@50 : 0.0473
+Tue 03 Nov 2026 11:35:36 INFO  epoch 35 training [time: 37.45s, train loss: 525389.7563]
+Tue 03 Nov 2026 11:36:01 INFO  epoch 35 evaluating [time: 25.44s, valid_score: 0.064000]
+Tue 03 Nov 2026 11:36:01 INFO  valid result: 
+recall@20 : 0.1361    recall@50 : 0.1994    ndcg@20 : 0.064    ndcg@50 : 0.0769    hit@20 : 0.1432    hit@50 : 0.2098    precision@20 : 0.0073    precision@50 : 0.0044    mrr@20 : 0.0452    mrr@50 : 0.0474
+Tue 03 Nov 2026 11:36:39 INFO  epoch 36 training [time: 37.12s, train loss: 525201.0117]
+Tue 03 Nov 2026 11:37:04 INFO  epoch 36 evaluating [time: 25.75s, valid_score: 0.064300]
+Tue 03 Nov 2026 11:37:04 INFO  valid result: 
+recall@20 : 0.1367    recall@50 : 0.1996    ndcg@20 : 0.0643    ndcg@50 : 0.077    hit@20 : 0.1437    hit@50 : 0.2101    precision@20 : 0.0074    precision@50 : 0.0044    mrr@20 : 0.0454    mrr@50 : 0.0475
+Tue 03 Nov 2026 11:37:04 INFO  Saving current: saved\SGCL-Nov-03-2026_10-49-23.pth
+Tue 03 Nov 2026 11:37:42 INFO  epoch 37 training [time: 37.30s, train loss: 525033.1797]
+Tue 03 Nov 2026 11:38:10 INFO  epoch 37 evaluating [time: 28.80s, valid_score: 0.064400]
+Tue 03 Nov 2026 11:38:10 INFO  valid result: 
+recall@20 : 0.1375    recall@50 : 0.1988    ndcg@20 : 0.0644    ndcg@50 : 0.0769    hit@20 : 0.1447    hit@50 : 0.2092    precision@20 : 0.0074    precision@50 : 0.0043    mrr@20 : 0.0454    mrr@50 : 0.0474
+Tue 03 Nov 2026 11:38:11 INFO  Saving current: saved\SGCL-Nov-03-2026_10-49-23.pth
+Tue 03 Nov 2026 11:38:51 INFO  epoch 38 training [time: 40.61s, train loss: 524868.6328]
+Tue 03 Nov 2026 11:39:17 INFO  epoch 38 evaluating [time: 25.49s, valid_score: 0.064000]
+Tue 03 Nov 2026 11:39:17 INFO  valid result: 
+recall@20 : 0.1362    recall@50 : 0.1998    ndcg@20 : 0.064    ndcg@50 : 0.0769    hit@20 : 0.1434    hit@50 : 0.2102    precision@20 : 0.0073    precision@50 : 0.0044    mrr@20 : 0.0452    mrr@50 : 0.0473
+Tue 03 Nov 2026 11:39:54 INFO  epoch 39 training [time: 37.22s, train loss: 524720.2141]
+Tue 03 Nov 2026 11:40:19 INFO  epoch 39 evaluating [time: 24.68s, valid_score: 0.064300]
+Tue 03 Nov 2026 11:40:19 INFO  valid result: 
+recall@20 : 0.1363    recall@50 : 0.1997    ndcg@20 : 0.0643    ndcg@50 : 0.0771    hit@20 : 0.1436    hit@50 : 0.2101    precision@20 : 0.0074    precision@50 : 0.0044    mrr@20 : 0.0455    mrr@50 : 0.0476
+Tue 03 Nov 2026 11:40:55 INFO  epoch 40 training [time: 36.82s, train loss: 524573.2544]
+Tue 03 Nov 2026 11:41:21 INFO  epoch 40 evaluating [time: 25.37s, valid_score: 0.064100]
+Tue 03 Nov 2026 11:41:21 INFO  valid result: 
+recall@20 : 0.1367    recall@50 : 0.2001    ndcg@20 : 0.0641    ndcg@50 : 0.0769    hit@20 : 0.1438    hit@50 : 0.2106    precision@20 : 0.0074    precision@50 : 0.0044    mrr@20 : 0.0451    mrr@50 : 0.0472
+Tue 03 Nov 2026 11:41:59 INFO  epoch 41 training [time: 38.45s, train loss: 524369.6404]
+Tue 03 Nov 2026 11:42:25 INFO  epoch 41 evaluating [time: 25.96s, valid_score: 0.064100]
+Tue 03 Nov 2026 11:42:25 INFO  valid result: 
+recall@20 : 0.1364    recall@50 : 0.1991    ndcg@20 : 0.0641    ndcg@50 : 0.0769    hit@20 : 0.1435    hit@50 : 0.2094    precision@20 : 0.0074    precision@50 : 0.0044    mrr@20 : 0.0453    mrr@50 : 0.0474
+Tue 03 Nov 2026 11:43:02 INFO  epoch 42 training [time: 37.31s, train loss: 524217.5098]
+Tue 03 Nov 2026 11:43:28 INFO  epoch 42 evaluating [time: 25.88s, valid_score: 0.064100]
+Tue 03 Nov 2026 11:43:28 INFO  valid result: 
+recall@20 : 0.1361    recall@50 : 0.1998    ndcg@20 : 0.0641    ndcg@50 : 0.077    hit@20 : 0.1433    hit@50 : 0.2101    precision@20 : 0.0073    precision@50 : 0.0044    mrr@20 : 0.0453    mrr@50 : 0.0474
+Tue 03 Nov 2026 11:44:09 INFO  epoch 43 training [time: 40.20s, train loss: 524091.0054]
+Tue 03 Nov 2026 11:44:34 INFO  epoch 43 evaluating [time: 25.10s, valid_score: 0.064100]
+Tue 03 Nov 2026 11:44:34 INFO  valid result: 
+recall@20 : 0.1363    recall@50 : 0.1992    ndcg@20 : 0.0641    ndcg@50 : 0.0769    hit@20 : 0.1434    hit@50 : 0.2098    precision@20 : 0.0073    precision@50 : 0.0044    mrr@20 : 0.0452    mrr@50 : 0.0473
+Tue 03 Nov 2026 11:45:14 INFO  epoch 44 training [time: 40.56s, train loss: 523888.4165]
+Tue 03 Nov 2026 11:45:40 INFO  epoch 44 evaluating [time: 25.64s, valid_score: 0.064300]
+Tue 03 Nov 2026 11:45:40 INFO  valid result: 
+recall@20 : 0.1367    recall@50 : 0.1993    ndcg@20 : 0.0643    ndcg@50 : 0.0769    hit@20 : 0.1438    hit@50 : 0.2096    precision@20 : 0.0074    precision@50 : 0.0044    mrr@20 : 0.0454    mrr@50 : 0.0475
+Tue 03 Nov 2026 11:46:17 INFO  epoch 45 training [time: 36.93s, train loss: 523775.5764]
+Tue 03 Nov 2026 11:46:42 INFO  epoch 45 evaluating [time: 25.65s, valid_score: 0.064300]
+Tue 03 Nov 2026 11:46:42 INFO  valid result: 
+recall@20 : 0.1369    recall@50 : 0.1993    ndcg@20 : 0.0643    ndcg@50 : 0.0769    hit@20 : 0.1441    hit@50 : 0.2098    precision@20 : 0.0074    precision@50 : 0.0044    mrr@20 : 0.0453    mrr@50 : 0.0474
+Tue 03 Nov 2026 11:47:20 INFO  epoch 46 training [time: 37.62s, train loss: 523612.8484]
+Tue 03 Nov 2026 11:47:46 INFO  epoch 46 evaluating [time: 25.81s, valid_score: 0.064300]
+Tue 03 Nov 2026 11:47:46 INFO  valid result: 
+recall@20 : 0.137    recall@50 : 0.1999    ndcg@20 : 0.0643    ndcg@50 : 0.0771    hit@20 : 0.1442    hit@50 : 0.2103    precision@20 : 0.0074    precision@50 : 0.0044    mrr@20 : 0.0454    mrr@50 : 0.0475
+Tue 03 Nov 2026 11:48:24 INFO  epoch 47 training [time: 37.86s, train loss: 523528.0559]
+Tue 03 Nov 2026 11:48:49 INFO  epoch 47 evaluating [time: 25.25s, valid_score: 0.064300]
+Tue 03 Nov 2026 11:48:49 INFO  valid result: 
+recall@20 : 0.1368    recall@50 : 0.1995    ndcg@20 : 0.0643    ndcg@50 : 0.077    hit@20 : 0.1439    hit@50 : 0.21    precision@20 : 0.0074    precision@50 : 0.0044    mrr@20 : 0.0454    mrr@50 : 0.0475
+Tue 03 Nov 2026 11:49:27 INFO  epoch 48 training [time: 38.04s, train loss: 523391.1409]
+Tue 03 Nov 2026 11:49:56 INFO  epoch 48 evaluating [time: 29.18s, valid_score: 0.064300]
+Tue 03 Nov 2026 11:49:56 INFO  valid result: 
+recall@20 : 0.1368    recall@50 : 0.1999    ndcg@20 : 0.0643    ndcg@50 : 0.0771    hit@20 : 0.1439    hit@50 : 0.2103    precision@20 : 0.0074    precision@50 : 0.0044    mrr@20 : 0.0455    mrr@50 : 0.0476
+Tue 03 Nov 2026 11:49:56 INFO  Finished training, best eval result in epoch 37
+Tue 03 Nov 2026 11:49:56 INFO  Loading model structure and parameters from saved\SGCL-Nov-03-2026_10-49-23.pth
+Tue 03 Nov 2026 11:50:22 INFO  best valid : OrderedDict({'recall@20': np.float64(0.1375), 'recall@50': np.float64(0.1988), 'ndcg@20': np.float64(0.0644), 'ndcg@50': np.float64(0.0769), 'hit@20': np.float64(0.1447), 'hit@50': np.float64(0.2092), 'precision@20': np.float64(0.0074), 'precision@50': np.float64(0.0043), 'mrr@20': np.float64(0.0454), 'mrr@50': np.float64(0.0474)})
+Tue 03 Nov 2026 11:50:22 INFO  test result: OrderedDict({'recall@20': np.float64(0.1361), 'recall@50': np.float64(0.1999), 'ndcg@20': np.float64(0.0661), 'ndcg@50': np.float64(0.079), 'hit@20': np.float64(0.1438), 'hit@50': np.float64(0.2108), 'precision@20': np.float64(0.0074), 'precision@50': np.float64(0.0044), 'mrr@20': np.float64(0.0478), 'mrr@50': np.float64(0.0499)})

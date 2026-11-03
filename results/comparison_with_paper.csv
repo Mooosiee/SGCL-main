@@ -1,0 +1,9 @@
+dataset,metric,paper,reproduced,diff
+amazon-beauty,recall@20,0.141,0.1431,0.0021
+amazon-beauty,ndcg@20,0.0677,0.0689,0.0012
+amazon-beauty,recall@50,0.2105,0.2121,0.0016
+amazon-beauty,ndcg@50,0.0807,0.0831,0.0024
+amazon-toys-games,recall@20,0.1317,0.1322,0.0005
+amazon-toys-games,ndcg@20,0.0626,0.0636,0.001
+amazon-toys-games,recall@50,0.1965,0.1951,-0.0014
+amazon-toys-games,ndcg@50,0.0774,0.0764,-0.001

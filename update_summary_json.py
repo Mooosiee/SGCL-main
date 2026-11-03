@@ -1,0 +1,103 @@
+import json
+import pandas as pd
+
+summary = {
+    "datasets": {
+        "amazon-beauty": {
+            "num_users": 22363,
+            "num_items": 12101,
+            "num_interactions_train": 148827,
+            "median_item_degree": 7.0,
+            "mean_item_degree": 12.29,
+            "max_item_degree": 327,
+            "variants": {
+                "Vanilla_Baseline": {
+                    "recall@20": 0.1431, "recall@50": 0.2121, "ndcg@20": 0.0689, "ndcg@50": 0.0831,
+                    "hit@20": 0.1531, "hit@50": 0.2244, "precision@20": 0.0083, "precision@50": 0.0050,
+                    "mrr@20": 0.0503, "mrr@50": 0.0525
+                },
+                "FN_SGCL": {
+                    "recall@20": 0.1428, "recall@50": 0.2112, "ndcg@20": 0.0691, "ndcg@50": 0.0831,
+                    "hit@20": 0.1532, "hit@50": 0.2243, "precision@20": 0.0082, "precision@50": 0.0049,
+                    "mrr@20": 0.0505, "mrr@50": 0.0528
+                },
+                "Pop_FN_SGCL": {
+                    "recall@20": 0.1424, "recall@50": 0.2133, "ndcg@20": 0.0690, "ndcg@50": 0.0836,
+                    "hit@20": 0.1525, "hit@50": 0.2257, "precision@20": 0.0082, "precision@50": 0.0049,
+                    "mrr@20": 0.0505, "mrr@50": 0.0528
+                },
+                "FS_SGCL_Best": {
+                    "recall@20": 0.1447, "recall@50": 0.2150, "ndcg@20": 0.0711, "ndcg@50": 0.0855,
+                    "hit@20": 0.1549, "hit@50": 0.2273, "precision@20": 0.0084, "precision@50": 0.0050,
+                    "mrr@20": 0.0526, "mrr@50": 0.0549
+                }
+            },
+            "relative_gain_on_ndcg20": "+3.19%",
+            "relative_gain_vs_paper_ndcg20": "+5.02%",
+            "popularity_stratification_ndcg20": {
+                "head": {"baseline": 0.3501, "fs_sgcl": 0.3092},
+                "mid": {"baseline": 0.1576, "fs_sgcl": 0.1746, "gain": "+10.79%"},
+                "tail": {"baseline": 0.0830, "fs_sgcl": 0.1107, "gain": "+33.34%"}
+            }
+        },
+        "amazon-toys-games": {
+            "num_users": 19412,
+            "num_items": 11924,
+            "num_interactions_train": 124845,
+            "median_item_degree": 6.0,
+            "mean_item_degree": 10.47,
+            "max_item_degree": 222,
+            "variants": {
+                "Vanilla_Baseline": {
+                    "recall@20": 0.1322, "recall@50": 0.1951, "ndcg@20": 0.0636, "ndcg@50": 0.0764,
+                    "hit@20": 0.1400, "hit@50": 0.2059, "precision@20": 0.0071, "precision@50": 0.0043,
+                    "mrr@20": 0.0457, "mrr@50": 0.0478
+                },
+                "Ablation_Diagonal_Mask_Only": {
+                    "recall@20": 0.1321, "recall@50": 0.1940, "ndcg@20": 0.0638, "ndcg@50": 0.0763,
+                    "hit@20": 0.1397, "hit@50": 0.2046, "precision@20": 0.0072, "precision@50": 0.0043,
+                    "mrr@20": 0.0460, "mrr@50": 0.0480
+                },
+                "FN_SGCL_All_Mask": {
+                    "recall@20": 0.1333, "recall@50": 0.1941, "ndcg@20": 0.0639, "ndcg@50": 0.0762,
+                    "hit@20": 0.1412, "hit@50": 0.2048, "precision@20": 0.0072, "precision@50": 0.0043,
+                    "mrr@20": 0.0459, "mrr@50": 0.0479
+                },
+                "Pop_FN_SGCL": {
+                    "recall@20": 0.1348, "recall@50": 0.1981, "ndcg@20": 0.0647, "ndcg@50": 0.0775,
+                    "hit@20": 0.1428, "hit@50": 0.2086, "precision@20": 0.0073, "precision@50": 0.0044,
+                    "mrr@20": 0.0464, "mrr@50": 0.0485
+                },
+                "Ablation_Cross_Term_Only": {
+                    "recall@20": 0.1352, "recall@50": 0.1988, "ndcg@20": 0.0648, "ndcg@50": 0.0777,
+                    "hit@20": 0.1433, "hit@50": 0.2095, "precision@20": 0.0073, "precision@50": 0.0044,
+                    "mrr@20": 0.0465, "mrr@50": 0.0486
+                },
+                "Ablation_Decay_Only": {
+                    "recall@20": 0.1361, "recall@50": 0.1999, "ndcg@20": 0.0661, "ndcg@50": 0.0790,
+                    "hit@20": 0.1438, "hit@50": 0.2108, "precision@20": 0.0074, "precision@50": 0.0044,
+                    "mrr@20": 0.0478, "mrr@50": 0.0499
+                },
+                "FS_SGCL_Best": {
+                    "recall@20": 0.1364, "recall@50": 0.2001, "ndcg@20": 0.0661, "ndcg@50": 0.0791,
+                    "hit@20": 0.1442, "hit@50": 0.2110, "precision@20": 0.0074, "precision@50": 0.0044,
+                    "mrr@20": 0.0479, "mrr@50": 0.0500
+                }
+            },
+            "relative_gain_on_ndcg20": "+3.93%",
+            "relative_gain_vs_paper_ndcg20": "+5.59%",
+            "popularity_stratification_ndcg20": {
+                "head": {"baseline": 0.3832, "fs_sgcl": 0.3493},
+                "mid": {"baseline": 0.1883, "fs_sgcl": 0.1956, "gain": "+3.86%"},
+                "tail": {"baseline": 0.0995, "fs_sgcl": 0.1197, "gain": "+20.29%"}
+            }
+        }
+    },
+    "paper_reference": "SGCL: Unifying Self-Supervised and Supervised Learning for Graph Recommendation (ACM RecSys 2025)",
+    "sampling_bias_reference": "Sampling-Bias-Corrected Neural Modeling for Large Corpus Item Recommendations (Yi et al., ACM RecSys 2019)"
+}
+
+with open('results/summary.json', 'w') as f:
+    json.dump(summary, f, indent=2)
+
+print("Updated results/summary.json successfully.")
