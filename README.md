@@ -156,6 +156,7 @@ SGCL trains with cosine similarity on the unit hypersphere ($L_2$-normalized). E
 ├── test_norm_eval.py                      # Cosine-normalized vs unnormalized inference script
 ├── test_fs_loss.py                        # Unit test suite verifying loss gradients and masks
 ├── PROJECT_REPORT.md                      # Comprehensive academic project report
+├── STUDY_GUIDE.md                         # From-scratch study guide & viva prep
 ├── PRESENTATION_SLIDES.md                 # Slide deck for presentation / defense
 └── config.yaml                            # Standard 5-core RecBole configuration
 ```

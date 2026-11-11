@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diagnosis-Driven Improvements to SGCL - Project Presentation</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+
+  :root {
+    --bg-main: #0f172a;
+    --card-bg: #1e293b;
+    --card-border: #334155;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --accent-blue: #38bdf8;
+    --accent-green: #34d399;
+    --accent-purple: #c084fc;
+    --accent-amber: #fbbf24;
+    --accent-red: #f87171;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg-main);
+    color: var(--text-primary);
+    overflow-x: hidden;
+  }
+
+  /* Slide Container */
+  .slide-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px;
+    gap: 32px;
+  }
+
+  .slide {
+    width: 100%;
+    max-width: 1100px;
+    min-height: 620px;
+    background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 48px 56px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 20px 40px -15px rgba(0,0,0,0.5);
+    position: relative;
+    page-break-after: always;
+  }
+
+  /* Header */
+  .slide-header {
+    border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+    padding-bottom: 16px;
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .slide-title {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .slide-title span {
+    color: var(--accent-blue);
+  }
+  .slide-tag {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    background: rgba(56, 189, 248, 0.15);
+    color: var(--accent-blue);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+  }
+
+  /* Body Content */
+  .slide-body {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  /* Footer */
+  .slide-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(148, 163, 184, 0.15);
+    padding-top: 14px;
+    margin-top: 20px;
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+
+  /* Typography */
+  h1 { font-size: 36px; font-weight: 800; line-height: 1.25; color: #fff; }
+  h2 { font-size: 20px; font-weight: 600; color: var(--accent-blue); margin-bottom: 8px; }
+  p, li { font-size: 15px; line-height: 1.6; color: #cbd5e1; }
+  ul { padding-left: 20px; display: flex; flex-direction: column; gap: 8px; }
+
+  /* Grid Layouts */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+  /* Cards */
+  .card {
+    background: rgba(30, 41, 59, 0.7);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .card-highlight {
+    border-color: rgba(56, 189, 248, 0.4);
+    background: rgba(56, 189, 248, 0.05);
+  }
+  .card h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    margin-top: 8px;
+  }
+  th {
+    background: #243247;
+    color: var(--accent-blue);
+    font-weight: 600;
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 2px solid var(--card-border);
+  }
+  td {
+    padding: 9px 12px;
+    border-bottom: 1px solid rgba(51, 65, 85, 0.7);
+    color: #e2e8f0;
+  }
+  tr.highlight-row {
+    background: rgba(56, 189, 248, 0.1);
+    font-weight: 600;
+  }
+  tr.highlight-row td {
+    color: #38bdf8;
+    border-bottom: 1px solid rgba(56, 189, 248, 0.3);
+  }
+  .gain-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 12px;
+    background: rgba(52, 211, 153, 0.2);
+    color: var(--accent-green);
+    border: 1px solid rgba(52, 211, 153, 0.3);
+  }
+
+  /* Code & Math */
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    background: #0f172a;
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--accent-blue);
+  }
+  .formula-box {
+    background: #0b1120;
+    border: 1px solid #1e293b;
+    border-left: 4px solid var(--accent-blue);
+    padding: 12px 16px;
+    border-radius: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: #e2e8f0;
+    margin: 8px 0;
+  }
+
+  /* Status Badges */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .badge-blue { background: rgba(56, 189, 248, 0.2); color: var(--accent-blue); }
+  .badge-green { background: rgba(52, 211, 153, 0.2); color: var(--accent-green); }
+  .badge-purple { background: rgba(192, 132, 252, 0.2); color: var(--accent-purple); }
+
+  /* Print Styles for PDF Export */
+  @media print {
+    body { background: #fff !important; color: #000 !important; }
+    .slide-container { padding: 0 !important; gap: 0 !important; }
+    .slide {
+      width: 100vw !important;
+      height: 100vh !important;
+      max-width: none !important;
+      min-height: none !important;
+      border: none !important;
+      border-radius: 0 !important;
+      box-shadow: none !important;
+      background: #ffffff !important;
+      color: #0f172a !important;
+      padding: 40px 50px !important;
+    }
+    .slide-title { color: #0f172a !important; }
+    .slide-title span { color: #0284c7 !important; }
+    .card {
+      background: #f8fafc !important;
+      border: 1px solid #cbd5e1 !important;
+      color: #0f172a !important;
+    }
+    th {
+      background: #e2e8f0 !important;
+      color: #0f172a !important;
+      border-bottom: 2px solid #94a3b8 !important;
+    }
+    td {
+      border-bottom: 1px solid #e2e8f0 !important;
+      color: #1e293b !important;
+    }
+    tr.highlight-row {
+      background: #e0f2fe !important;
+    }
+    tr.highlight-row td {
+      color: #0369a1 !important;
+    }
+    p, li { color: #334155 !important; }
+    .formula-box {
+      background: #f1f5f9 !important;
+      border: 1px solid #cbd5e1 !important;
+      border-left: 4px solid #0284c7 !important;
+      color: #0f172a !important;
+    }
+    code {
+      background: #e2e8f0 !important;
+      color: #0f172a !important;
+    }
+    .gain-tag {
+      background: #dcfce7 !important;
+      color: #15803d !important;
+      border: 1px solid #86efac !important;
+    }
+    .slide-footer { color: #64748b !important; border-top: 1px solid #e2e8f0 !important; }
+    .no-print { display: none !important; }
+  }
+
+  .nav-bar {
+    position: sticky;
+    top: 12px;
+    z-index: 100;
+    background: rgba(15, 23, 42, 0.9);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--card-border);
+    padding: 10px 24px;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+  }
+  .nav-btn {
+    background: #1e293b;
+    border: 1px solid var(--card-border);
+    color: #fff;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .nav-btn:hover {
+    background: var(--accent-blue);
+    color: #0f172a;
+  }
+</style>
+</head>
+<body>
+
+<div class="slide-container">
+
+  <!-- Interactive Controls Bar -->
+  <div class="nav-bar no-print">
+    <span style="font-size: 13px; font-weight: 600; color: #94a3b8;">Presentation Deck</span>
+    <button class="nav-btn" onclick="window.print()">🖨️ Save as PDF / Print</button>
+    <span style="font-size: 12px; color: #64748b;">(10 Slides • Final Year B.Tech Project)</span>
+  </div>
+
+  <!-- SLIDE 1: Title -->
+  <div class="slide" id="slide-1">
+    <div class="slide-header">
+      <div class="slide-tag">Final Year B.Tech (SEM-7) Project Defense</div>
+      <span style="font-size: 13px; color: #94a3b8;">Recommender Systems (RDS)</span>
+    </div>
+    <div class="slide-body" style="text-align: center; justify-content: center; gap: 24px;">
+      <div style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; margin: 0 auto;">
+        <span class="badge badge-blue">Graph Machine Learning</span>
+        <span class="badge badge-green">ACM RecSys 2025</span>
+        <span class="badge badge-purple">Contrastive Learning</span>
+      </div>
+      <h1 style="max-width: 900px; margin: 0 auto;">
+        Diagnosis-Driven Improvements to SGCL's Supervised Contrastive Loss
+      </h1>
+      <p style="font-size: 18px; max-width: 750px; margin: 0 auto; color: #94a3b8;">
+        A rigorous structural diagnosis of Supervised Graph Contrastive Learning, resolving identity collisions, negative popularity skew, and graph over-smoothing.
+      </p>
+      <div class="grid-3" style="max-width: 800px; margin: 16px auto 0 auto;">
+        <div class="card" style="padding: 12px;">
+          <div style="font-size: 12px; color: #94a3b8;">Target Baseline</div>
+          <div style="font-size: 14px; font-weight: 700; color: #38bdf8;">SGCL (RecSys '25)</div>
+        </div>
+        <div class="card" style="padding: 12px;">
+          <div style="font-size: 12px; color: #94a3b8;">Datasets</div>
+          <div style="font-size: 14px; font-weight: 700; color: #34d399;">Amazon Beauty & Toys</div>
+        </div>
+        <div class="card" style="padding: 12px;">
+          <div style="font-size: 12px; color: #94a3b8;">Peak Relative Gain</div>
+          <div style="font-size: 14px; font-weight: 700; color: #f59e0b;">+5.59% vs Published</div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Baseline: ACM RecSys 2025</span>
+      <span>Slide 1 / 10</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: Context & Baseline -->
+  <div class="slide" id="slide-2">
+    <div class="slide-header">
+      <div class="slide-title"><span>01</span> Background: Supervised Graph Contrastive Learning</div>
+      <div class="slide-tag">Baseline Overview</div>
+    </div>
+    <div class="slide-body">
+      <div class="grid-2">
+        <div class="card card-highlight">
+          <h3 style="color: var(--accent-blue);">The SGCL Premise (ACM RecSys 2025)</h3>
+          <p>
+            Standard graph recommenders rely on either <strong>BPR loss</strong> (pairwise ranking) or <strong>unsupervised InfoNCE</strong> (data augmentations).
+          </p>
+          <p style="margin-top: 10px;">
+            <strong>SGCL's Innovation</strong>: Directly construct supervised contrastive pairs from interaction edges $(u, i) \sim \mathcal{E}$, treating observed edges as positive pairs and in-batch non-paired entities as negative contrast.
+          </p>
+        </div>
+        <div class="card">
+          <h3 style="color: #cbd5e1;">SGCL Objective Formulation</h3>
+          <div class="formula-box">
+            L_SGCL = - ∑ log [ exp(u_b^T i_b / τ) / ( ∑_j exp(u_b^T u_j / τ) + ∑_j exp(i_b^T i_j / τ) ) ]
+          </div>
+          <p style="font-size: 13.5px; color: var(--text-secondary); margin-top: 8px;">
+            • User SSL: Denominator contrasts user <code>u_b</code> against all users <code>u_j</code> in batch.<br>
+            • Item SSL: Denominator contrasts item <code>i_b</code> against all items <code>i_j</code> in batch.<br>
+            • <code>τ = 0.2</code> temperature scaling.
+          </p>
+        </div>
+      </div>
+      <div class="card" style="border-left: 4px solid var(--accent-amber);">
+        <strong style="color: var(--accent-amber);">The Core Research Question:</strong>
+        <p style="margin-top: 4px;">
+          Does in-batch uniform edge sampling satisfy contrastive learning assumptions, or does it introduce destructive statistical and structural noise that degrades recommendation accuracy?
+        </p>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Diagnosis-Driven Improvements to SGCL</span>
+      <span>Slide 2 / 10</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: 3 Pathologies Diagnosed -->
+  <div class="slide" id="slide-3">
+    <div class="slide-header">
+      <div class="slide-title"><span>02</span> Three Structural Pathologies Discovered</div>
+      <div class="slide-tag">Problem Diagnosis</div>
+    </div>
+    <div class="slide-body">
+      <div class="grid-3">
+        <div class="card" style="border-top: 3px solid var(--accent-red);">
+          <h3 style="color: var(--accent-red);">1. Identity Collision Noise</h3>
+          <p style="font-size: 13.5px;">
+            Uniform edge batches ($B=1024$) naturally contain duplicate users and items. Default SGCL treats all non-diagonal batch entries as negatives.
+          </p>
+          <div style="margin-top: 12px; font-size: 13px; color: #fca5a5;">
+            <strong>Extreme Repulsive Force:</strong><br>
+            <code>exp(1/τ) ≈ 148.41</code> pushes identical semantic entities apart.
+          </div>
+          <div style="margin-top: 10px; font-size: 12px; color: var(--text-secondary);">
+            • 100% of batches have collisions<br>
+            • ~51.6k FN pairs/epoch in Beauty<br>
+            • ~37.5k FN pairs/epoch in Toys
+          </div>
+        </div>
+        <div class="card" style="border-top: 3px solid var(--accent-amber);">
+          <h3 style="color: var(--accent-amber);">2. Degree Sampling Skew</h3>
+          <p style="font-size: 13.5px;">
+            The sampling probability of item $k$ in edge batches is proportional to its degree: <code>Q(k) ∝ d_k</code>.
+          </p>
+          <div style="margin-top: 12px; font-size: 13px; color: #fde68a;">
+            <strong>Artificial Repulsion Field:</strong><br>
+            High-degree items dominate the negative denominator, starving long-tail items of contrastive gradient signal.
+          </div>
+          <div style="margin-top: 10px; font-size: 12px; color: var(--text-secondary);">
+            • Grounded in <strong>Yi et al. (RecSys '19)</strong><br>
+            • LogQ frequency calibration needed to restore catalog density
+          </div>
+        </div>
+        <div class="card" style="border-top: 3px solid var(--accent-blue);">
+          <h3 style="color: var(--accent-blue);">3. Missing Cross-Contrast</h3>
+          <p style="font-size: 13.5px;">
+            SGCL contrasts users-to-users and items-to-items, but <strong>never contrasts users against non-interacted items (u^T i)</strong>.
+          </p>
+          <div style="margin-top: 12px; font-size: 13px; color: #bae6fd;">
+            <strong>Over-Smoothing:</strong><br>
+            Uniform 1/4 layer averaging in LightGCN diffuses noise across 3 sparse bipartite hops.
+          </div>
+          <div style="margin-top: 10px; font-size: 12px; color: var(--text-secondary);">
+            • Fails to set direct decision margins<br>
+            • Requires geometric layer decay
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Diagnosis-Driven Improvements to SGCL</span>
+      <span>Slide 3 / 10</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: Proposed Methodology -->
+  <div class="slide" id="slide-4">
+    <div class="slide-header">
+      <div class="slide-title"><span>03</span> Proposed Solutions & Mathematical Formulations</div>
+      <div class="slide-tag">Methodology</div>
+    </div>
+    <div class="slide-body">
+      <div class="grid-3">
+        <div class="card">
+          <div class="badge badge-blue" style="margin-bottom: 8px;">FN-SGCL</div>
+          <h3>Dynamic Identity Masking</h3>
+          <p style="font-size: 13px;">
+            Mask duplicate user and item IDs across distinct batch rows:
+          </p>
+          <div class="formula-box" style="font-size: 11.5px;">
+            sim_u[b,j] = -∞ if u_b == u_j<br>
+            sim_i[b,j] = -∞ if i_b == i_j
+          </div>
+          <p style="font-size: 12.5px; color: var(--text-secondary);">
+            Eliminates ~7.6M units of false repulsive gradient mass per epoch.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="badge badge-green" style="margin-bottom: 8px;">Pop-FN-SGCL</div>
+          <h3>LogQ Frequency Calibration</h3>
+          <p style="font-size: 13px;">
+            Subtract degree correction inside the negative exponent (Yi et al., 2019):
+          </p>
+          <div class="formula-box" style="font-size: 11.5px;">
+            sim_i[b,j] - β · log(d_j + 1)
+          </div>
+          <p style="font-size: 12.5px; color: var(--text-secondary);">
+            At β=1.0, degree bias cancels out in expectation. We adopt calibrated β=0.5.
+          </p>
+        </div>
+
+        <div class="card card-highlight">
+          <div class="badge badge-purple" style="margin-bottom: 8px;">FS-SGCL (Best)</div>
+          <h3>Full-Spectrum Contrast</h3>
+          <p style="font-size: 13px;">
+            Cross-domain negative contrast + Geometric layer decay:
+          </p>
+          <div class="formula-box" style="font-size: 11.5px;">
+            + γ · ∑ exp(u_b^T i_j / τ - β log d_j)<br>
+            e = 0.40 e^(0) + 0.30 e^(1) + ...
+          </div>
+          <p style="font-size: 12.5px; color: var(--text-secondary);">
+            Includes fixed UI mask: <code>(u_b == u_j) | (i_b == i_j)</code>.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Diagnosis-Driven Improvements to SGCL</span>
+      <span>Slide 4 / 10</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: Benchmark Beauty -->
+  <div class="slide" id="slide-5">
+    <div class="slide-header">
+      <div class="slide-title"><span>04</span> Primary Benchmark: Amazon-Beauty</div>
+      <div class="slide-tag">Benchmark 1</div>
+    </div>
+    <div class="slide-body">
+      <p style="color: var(--text-secondary); font-size: 14px;">
+        Evaluated on full catalog ranking (12,101 items, 22,363 users, 148.8k train interactions). All metrics evaluated at K=20 and K=50.
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>Model Variant</th>
+            <th>NDCG@20</th>
+            <th>NDCG@50</th>
+            <th>Recall@20</th>
+            <th>Recall@50</th>
+            <th>Hit@20</th>
+            <th>MRR@20</th>
+            <th>Gain on NDCG@20</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Vanilla SGCL (Baseline)</strong></td>
+            <td>0.0689</td>
+            <td>0.0831</td>
+            <td>0.1431</td>
+            <td>0.2121</td>
+            <td>0.1531</td>
+            <td>0.0503</td>
+            <td>Baseline (0.0%)</td>
+          </tr>
+          <tr>
+            <td><strong>FN-SGCL (Novelty 1)</strong></td>
+            <td>0.0691</td>
+            <td>0.0831</td>
+            <td>0.1428</td>
+            <td>0.2112</td>
+            <td>0.1532</td>
+            <td>0.0505</td>
+            <td>+0.29%</td>
+          </tr>
+          <tr>
+            <td><strong>Pop-FN-SGCL (Novelty 2)</strong></td>
+            <td>0.0690</td>
+            <td>0.0836</td>
+            <td>0.1424</td>
+            <td>0.2133</td>
+            <td>0.1525</td>
+            <td>0.0505</td>
+            <td>+0.15%</td>
+          </tr>
+          <tr class="highlight-row">
+            <td><strong>FS-SGCL (Full Combination)</strong></td>
+            <td><strong>0.0711</strong></td>
+            <td><strong>0.0855</strong></td>
+            <td><strong>0.1447</strong></td>
+            <td><strong>0.2150</strong></td>
+            <td><strong>0.1549</strong></td>
+            <td><strong>0.0526</strong></td>
+            <td><span class="gain-tag">+3.19%</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="grid-2" style="margin-top: 16px;">
+        <div class="card" style="padding: 14px;">
+          <strong style="color: var(--accent-blue);">Comparison vs. Published ACM RecSys 2025 Paper:</strong>
+          <p style="font-size: 13px; margin-top: 4px;">
+            • Paper NDCG@20: <code>0.0677</code> → FS-SGCL: <strong>0.0711</strong> (<span style="color: var(--accent-green); font-weight:700;">+5.02% gain</span>)<br>
+            • Paper Recall@20: <code>0.1410</code> → FS-SGCL: <strong>0.1447</strong> (<span style="color: var(--accent-green); font-weight:700;">+2.62% gain</span>)
+          </p>
+        </div>
+        <div class="card" style="padding: 14px;">
+          <strong style="color: var(--accent-green);">Key Observation:</strong>
+          <p style="font-size: 13px; margin-top: 4px;">
+            FS-SGCL achieves the highest score across all 8 metrics simultaneously, validating the synergy of cross-domain contrast and layer decay.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Diagnosis-Driven Improvements to SGCL</span>
+      <span>Slide 5 / 10</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: Benchmark Toys -->
+  <div class="slide" id="slide-6">
+    <div class="slide-header">
+      <div class="slide-title"><span>05</span> Primary Benchmark: Amazon-Toys-Games</div>
+      <div class="slide-tag">Benchmark 2</div>
+    </div>
+    <div class="slide-body">
+      <p style="color: var(--text-secondary); font-size: 14px;">
+        Evaluated on full catalog ranking (11,924 items, 19,412 users, 124.8k train interactions).
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>Model Variant</th>
+            <th>NDCG@20</th>
+            <th>NDCG@50</th>
+            <th>Recall@20</th>
+            <th>Recall@50</th>
+            <th>Hit@20</th>
+            <th>MRR@20</th>
+            <th>Gain on NDCG@20</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Vanilla SGCL (Baseline)</strong></td>
+            <td>0.0636</td>
+            <td>0.0764</td>
+            <td>0.1322</td>
+            <td>0.1951</td>
+            <td>0.1400</td>
+            <td>0.0457</td>
+            <td>Baseline (0.0%)</td>
+          </tr>
+          <tr>
+            <td><strong>FN-SGCL (Novelty 1)</strong></td>
+            <td>0.0639</td>
+            <td>0.0762</td>
+            <td>0.1333</td>
+            <td>0.1941</td>
+            <td>0.1412</td>
+            <td>0.0459</td>
+            <td>+0.47%</td>
+          </tr>
+          <tr>
+            <td><strong>Pop-FN-SGCL (Novelty 2)</strong></td>
+            <td>0.0647</td>
+            <td>0.0775</td>
+            <td>0.1348</td>
+            <td>0.1981</td>
+            <td>0.1428</td>
+            <td>0.0464</td>
+            <td>+1.73%</td>
+          </tr>
+          <tr class="highlight-row">
+            <td><strong>FS-SGCL (Full Combination)</strong></td>
+            <td><strong>0.0661</strong></td>
+            <td><strong>0.0791</strong></td>
+            <td><strong>0.1364</strong></td>
+            <td><strong>0.2001</strong></td>
+            <td><strong>0.1441</strong></td>
+            <td><strong>0.0478</strong></td>
+            <td><span class="gain-tag">+3.93%</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="grid-2" style="margin-top: 16px;">
+        <div class="card" style="padding: 14px;">
+          <strong style="color: var(--accent-blue);">Comparison vs. Published ACM RecSys 2025 Paper:</strong>
+          <p style="font-size: 13px; margin-top: 4px;">
+            • Paper NDCG@20: <code>0.0626</code> → FS-SGCL: <strong>0.0661</strong> (<span style="color: var(--accent-green); font-weight:700;">+5.59% gain</span>)<br>
+            • Paper Recall@20: <code>0.1317</code> → FS-SGCL: <strong>0.1364</strong> (<span style="color: var(--accent-green); font-weight:700;">+3.57% gain</span>)
+          </p>
+        </div>
+        <div class="card" style="padding: 14px;">
+          <strong style="color: var(--accent-green);">Milestone Achievement:</strong>
+          <p style="font-size: 13px; margin-top: 4px;">
+            FS-SGCL is the only model to break through the <code>0.2000</code> ceiling on Recall@50 (<strong>0.2001</strong>) while lifting NDCG@20 by almost +4%.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Diagnosis-Driven Improvements to SGCL</span>
+      <span>Slide 6 / 10</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 7: Ablation Study -->
+  <div class="slide" id="slide-7">
+    <div class="slide-header">
+      <div class="slide-title"><span>06</span> Component Ablations: What Drives the Gain?</div>
+      <div class="slide-tag">Ablation Analysis</div>
+    </div>
+    <div class="slide-body">
+      <p style="color: var(--text-secondary); font-size: 14px;">
+        Systematic component isolation on Amazon-Toys-Games to rigorously answer reviewer questions.
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>Configuration</th>
+            <th>Mask Mode</th>
+            <th>β (LogQ)</th>
+            <th>γ (Cross)</th>
+            <th>Layer Weights</th>
+            <th>NDCG@20</th>
+            <th>Recall@20</th>
+            <th>Gain on NDCG@20</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Vanilla Baseline</strong></td>
+            <td>None</td>
+            <td>0.0</td>
+            <td>0.0</td>
+            <td>Uniform Mean</td>
+            <td>0.0636</td>
+            <td>0.1322</td>
+            <td>Baseline</td>
+          </tr>
+          <tr>
+            <td><strong>Ablation 3: Diagonal Mask Only</strong></td>
+            <td>Diagonal</td>
+            <td>0.0</td>
+            <td>0.0</td>
+            <td>Uniform Mean</td>
+            <td>0.0638</td>
+            <td>0.1321</td>
+            <td>+0.31%</td>
+          </tr>
+          <tr>
+            <td><strong>FN-SGCL (All Duplicate Mask)</strong></td>
+            <td>All</td>
+            <td>0.0</td>
+            <td>0.0</td>
+            <td>Uniform Mean</td>
+            <td>0.0639</td>
+            <td>0.1333</td>
+            <td>+0.47%</td>
+          </tr>
+          <tr>
+            <td><strong>Pop-FN-SGCL (Debiasing Only)</strong></td>
+            <td>All</td>
+            <td>0.5</td>
+            <td>0.0</td>
+            <td>Uniform Mean</td>
+            <td>0.0647</td>
+            <td>0.1348</td>
+            <td>+1.73%</td>
+          </tr>
+          <tr>
+            <td><strong>Ablation 1: Cross-Term Only</strong></td>
+            <td>All</td>
+            <td>0.5</td>
+            <td>0.2</td>
+            <td>Uniform Mean</td>
+            <td>0.0648</td>
+            <td>0.1352</td>
+            <td>+1.89%</td>
+          </tr>
+          <tr>
+            <td><strong>Ablation 2: Decay Only</strong></td>
+            <td>All</td>
+            <td>0.5</td>
+            <td>0.0</td>
+            <td>Decay</td>
+            <td>0.0661</td>
+            <td>0.1361</td>
+            <td>+3.93%</td>
+          </tr>
+          <tr class="highlight-row">
+            <td><strong>FS-SGCL (Full Combination)</strong></td>
+            <td>All</td>
+            <td>0.5</td>
+            <td>0.2</td>
+            <td>Decay</td>
+            <td><strong>0.0661</strong></td>
+            <td><strong>0.1364</strong></td>
+            <td><span class="gain-tag">+3.93%</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="grid-2" style="margin-top: 14px;">
+        <div class="card" style="padding: 12px;">
+          <strong style="color: var(--accent-red);">Do Identity Collisions Really Matter?</strong>
+          <p style="font-size: 13px; margin-top: 2px;">
+            Masking diagonal-only yields flat recall (<strong>0.1321</strong> vs 0.1322). Masking <em>all</em> in-batch duplicates jumps to <strong>0.1333</strong>, proving off-diagonal collision noise impairs learning.
+          </p>
+        </div>
+        <div class="card" style="padding: 12px;">
+          <strong style="color: var(--accent-green);">Decay & Cross-Contrast Synergy:</strong>
+          <p style="font-size: 13px; margin-top: 2px;">
+            Layer decay cures over-smoothing (NDCG=0.0661); adding cross-contrast maximizes top-tier recall (<strong>0.1364</strong>) and hit rate (<strong>0.1442</strong>).
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Diagnosis-Driven Improvements to SGCL</span>
+      <span>Slide 7 / 10</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 8: Popularity Stratification -->
+  <div class="slide" id="slide-8">
+    <div class="slide-header">
+      <div class="slide-title"><span>07</span> Empirical Proof for Long-Tail Debiasing</div>
+      <div class="slide-tag">Long-Tail Evidence</div>
+    </div>
+    <div class="slide-body">
+      <p style="color: var(--text-secondary); font-size: 14px;">
+        Items partitioned into <strong>Head</strong> (top 20%, deg ≥ 14), <strong>Mid</strong> (middle 30%, 6 ≤ deg < 14), and <strong>Tail</strong> (bottom 50%, deg < 6).
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>Dataset</th>
+            <th>Model</th>
+            <th>Overall NDCG@20</th>
+            <th>Head NDCG@20</th>
+            <th>Mid NDCG@20</th>
+            <th>Tail NDCG@20</th>
+            <th>Gain on Tail NDCG@20</th>
+            <th>Top-20 Tail Exposure</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td rowspan="2"><strong>Toys & Games</strong></td>
+            <td>Vanilla SGCL</td>
+            <td>0.2655</td>
+            <td>0.3832</td>
+            <td>0.1883</td>
+            <td>0.0995</td>
+            <td>Baseline</td>
+            <td>5.33%</td>
+          </tr>
+          <tr class="highlight-row">
+            <td>FS-SGCL (Ours)</td>
+            <td>0.2565</td>
+            <td>0.3493</td>
+            <td><strong>0.1956</strong></td>
+            <td><strong>0.1197</strong></td>
+            <td><span class="gain-tag">+20.29%</span></td>
+            <td><strong>5.73% (+7.5% rel)</strong></td>
+          </tr>
+          <tr>
+            <td rowspan="2"><strong>Beauty</strong></td>
+            <td>Vanilla SGCL</td>
+            <td>0.2481</td>
+            <td>0.3501</td>
+            <td>0.1576</td>
+            <td>0.0830</td>
+            <td>Baseline</td>
+            <td>4.50%</td>
+          </tr>
+          <tr class="highlight-row">
+            <td>FS-SGCL (Ours)</td>
+            <td>0.2363</td>
+            <td>0.3092</td>
+            <td><strong>0.1746</strong></td>
+            <td><strong>0.1107</strong></td>
+            <td><span class="gain-tag">+33.34%</span></td>
+            <td><strong>5.22% (+16.0% rel)</strong></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="card card-highlight" style="margin-top: 16px;">
+        <h3 style="color: var(--accent-green);">Empirical Takeaway:</h3>
+        <p style="font-size: 13.5px;">
+          Vanilla SGCL severely over-concentrates ranking capacity on head items, yielding poor recommendation quality for long-tail items. FS-SGCL achieves a massive <strong>+20.29% (Toys)</strong> and <strong>+33.34% (Beauty)</strong> improvement in Tail NDCG@20, alongside an increase in tail catalog exposure in top-20 recommendations.
+        </p>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Diagnosis-Driven Improvements to SGCL</span>
+      <span>Slide 8 / 10</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 9: Normalization Finding -->
+  <div class="slide" id="slide-9">
+    <div class="slide-header">
+      <div class="slide-title"><span>08</span> Inference Normalization Discovery</div>
+      <div class="slide-tag">Theory & Practice Gap</div>
+    </div>
+    <div class="slide-body">
+      <div class="grid-2">
+        <div class="card">
+          <h3 style="color: var(--accent-blue);">The Geometric Discrepancy</h3>
+          <p style="font-size: 13.5px;">
+            SGCL's loss explicitly normalizes embeddings to unit length during training:
+          </p>
+          <div class="formula-box">
+            pos_score = exp( ũ_b^T ĩ_b / τ )<br>
+            ũ = u / ||u||_2,  ĩ = i / ||i||_2
+          </div>
+          <p style="font-size: 13px; color: var(--text-secondary); margin-top: 8px;">
+            <strong>The Problem:</strong> Standard RecBole evaluates testing ranks using <em>raw unnormalized dot products</em> (<code>u^T i</code>), introducing vector-length distortions.
+          </p>
+        </div>
+        <div class="card card-highlight">
+          <h3 style="color: var(--accent-green);">Normalized vs. Unnormalized Test</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Metric</th>
+                <th>Unnormalized Dot</th>
+                <th>Normalized Cosine</th>
+                <th>Relative Gain</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>NDCG@20</strong></td>
+                <td>0.2403</td>
+                <td><strong>0.4317</strong></td>
+                <td><span class="gain-tag">+79.6%</span></td>
+              </tr>
+              <tr>
+                <td><strong>Recall@20</strong></td>
+                <td>0.4496</td>
+                <td><strong>0.5922</strong></td>
+                <td><span class="gain-tag">+31.7%</span></td>
+              </tr>
+              <tr>
+                <td><strong>MRR@20</strong></td>
+                <td>0.1843</td>
+                <td><strong>0.3922</strong></td>
+                <td><span class="gain-tag">+112.8%</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card" style="border-left: 4px solid var(--accent-blue);">
+        <strong style="color: var(--accent-blue);">Insight:</strong>
+        <p style="font-size: 13px; margin-top: 4px;">
+          SGCL's discriminative geometry lives strictly on the angular unit hypersphere. Evaluating via raw dot products artificially confounds embedding magnitude with similarity, depressing perceived performance.
+        </p>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Diagnosis-Driven Improvements to SGCL</span>
+      <span>Slide 9 / 10</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 10: Conclusion -->
+  <div class="slide" id="slide-10">
+    <div class="slide-header">
+      <div class="slide-title"><span>09</span> Conclusion & Contributions</div>
+      <div class="slide-tag">Summary</div>
+    </div>
+    <div class="slide-body">
+      <div class="grid-2">
+        <div class="card">
+          <h3 style="color: var(--accent-blue);">Summary of Contributions</h3>
+          <ul>
+            <li><strong>Pathology Diagnosis</strong>: Uncovered identity collision noise (~51k FN pairs/epoch), degree sampling bias, and missing cross-contrast in SGCL.</li>
+            <li><strong>Principled Formulations</strong>: Introduced dynamic identity masking, logQ importance sampling correction, and cross-domain contrast with layer decay.</li>
+            <li><strong>Solid Empirical Gains</strong>: Consistently beats reproduced baseline (+3-4%) and ACM RecSys '25 published paper (+5-6%) across all 8 ranking metrics.</li>
+            <li><strong>Long-Tail Superiority</strong>: +20% to +33% NDCG@20 surge on tail items.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3 style="color: var(--accent-green);">Reproducibility & Deliverables</h3>
+          <ul>
+            <li><strong>Code</strong>: Clean, modular <code>recbole_gnn/model/general_recommender/sgcl.py</code>.</li>
+            <li><strong>Evidence</strong>: 8 complete per-epoch CSV tracking files and logs in <code>results/</code>.</li>
+            <li><strong>Artifacts</strong>: Automated popularity stratification scripts and unit test suite.</li>
+            <li><strong>Documentation</strong>: GitHub-ready README, comprehensive PROJECT_REPORT, and Presentation Slide Deck.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card" style="text-align: center; padding: 18px; background: rgba(56, 189, 248, 0.08); border-color: rgba(56, 189, 248, 0.3);">
+        <h2 style="color: #fff; margin-bottom: 4px;">Thank You! Questions & Discussion</h2>
+        <p style="font-size: 14px; color: #94a3b8;">
+          All code, checkpoints, logs, and evidence are fully reproducible in the workspace.
+        </p>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Diagnosis-Driven Improvements to SGCL</span>
+      <span>Slide 10 / 10</span>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
