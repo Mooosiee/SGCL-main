@@ -1,0 +1,7 @@
+dataset,model,seed,device,params,best_epoch,total_epochs,train_time_s,best_valid_ndcg@20,recall@20,ndcg@20,recall@50,ndcg@50,hit@20,mrr@20,hparams,checkpoint_path
+amazon-beauty,SGCL,2020,cpu,2205824,56,68,3171.75,0.0665,0.1431,0.0689,0.2121,0.0831,0.1531,0.0503,{},saved/SGCL-Oct-25-2026_21-32-31.pth
+amazon-beauty,FS-SGCL,2020,cpu,2205824,48,60,4913.51,0.0677,0.1447,0.0711,0.215,0.0855,0.1549,0.0526,{},saved/SGCL-Nov-03-2026_08-17-14.pth
+amazon-toys-games,LightGCN,2020,cuda,2005632,148,160,3621.0,0.0570,0.1181,0.0567,0.1779,0.0688,0.1254,0.0407,{},saved/benchmark/LightGCN-Nov-11-2026_06-53-30.pth
+amazon-toys-games,SGL,2020,cuda,2005632,96,108,2865.9,0.0596,0.1221,0.0603,0.1847,0.073,0.1292,0.044,{},saved/benchmark/SGL-Nov-11-2026_07-54-31.pth
+amazon-toys-games,SGCL,2020,cpu,2005632,27,39,1385.35,0.0618,0.1322,0.0636,0.1951,0.0764,0.14,0.0457,{},saved/SGCL-Oct-25-2026_22-26-11.pth
+amazon-toys-games,FS-SGCL,2020,cpu,2005632,37,49,3644.85,0.0645,0.1364,0.0661,0.2001,0.0791,0.1442,0.0479,{},saved/SGCL-Nov-03-2026_07-15-07.pth

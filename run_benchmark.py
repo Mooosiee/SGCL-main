@@ -88,16 +88,19 @@ DEFAULT_MODEL_CONFIGS = {
             'learning_rate': 0.001,
             'reg_weight': 1e-4,
             'require_pow': False,
-            'lambda': 0.2,
+            # RecBole-GNN SimGCL sums calculate_cl_loss() (~5944/batch) while LightGCN BPRLoss()
+            # averages (~0.693/batch). At batch_size=1024, lambda=2e-4 matches published lambda=0.2
+            # under mean reduction (~0.2 / 1024) and avoids epoch-1 BPR collapse.
+            'lambda': 2e-4,
             'eps': 0.1,
             'temperature': 0.2,
             'weight_decay': 0.0,
         },
         'tune_grid': [
-            {'lambda': 0.2, 'eps': 0.1, 'reg_weight': 1e-4},
-            {'lambda': 0.5, 'eps': 0.1, 'reg_weight': 1e-4},
-            {'lambda': 0.2, 'eps': 0.2, 'reg_weight': 1e-4},
-            {'lambda': 0.2, 'eps': 0.1, 'reg_weight': 1e-5},
+            {'lambda': 1e-4, 'eps': 0.1, 'reg_weight': 1e-4},
+            {'lambda': 2e-4, 'eps': 0.1, 'reg_weight': 1e-4},
+            {'lambda': 5e-4, 'eps': 0.1, 'reg_weight': 1e-4},
+            {'lambda': 2e-4, 'eps': 0.2, 'reg_weight': 1e-4},
         ],
     },
     'LightGCL': {
@@ -253,6 +256,12 @@ def generate_summary_tables(runs_csv, summary_csv, tables_md):
     if df.empty:
         return
 
+    model_order = {m: i for i, m in enumerate(DEFAULT_MODEL_CONFIGS.keys())}
+    dataset_order = {'amazon-beauty': 0, 'amazon-toys-games': 1}
+    df['_ds_ord'] = df['dataset'].map(lambda d: dataset_order.get(d, 99))
+    df['_m_ord'] = df['model'].map(lambda m: model_order.get(m, 99))
+    df = df.sort_values(['_ds_ord', '_m_ord', 'seed']).drop(columns=['_ds_ord', '_m_ord'])
+
     metrics = ['recall@20', 'ndcg@20', 'recall@50', 'ndcg@50', 'hit@20', 'mrr@20', 'train_time_s', 'best_epoch']
     grouped_rows = []
     for (dataset, model), g in df.groupby(['dataset', 'model'], sort=False):
@@ -260,6 +269,7 @@ def generate_summary_tables(runs_csv, summary_csv, tables_md):
             'dataset': dataset,
             'model': model,
             'n_seeds': len(g),
+            'device': '/'.join(g['device'].astype(str).unique()) if 'device' in g.columns else 'unknown',
             'params': int(g['params'].iloc[0]),
         }
         for m in metrics:
@@ -289,10 +299,10 @@ def generate_summary_tables(runs_csv, summary_csv, tables_md):
         md_lines.append("")
 
         md_lines.append(f"### Efficiency — {dataset}\n")
-        md_lines.append("| Model | Params | Best Epoch | Wall Time (s) |")
-        md_lines.append("| :--- | :--- | :--- | :--- |")
+        md_lines.append("| Model | Device | Params | Best Epoch | Wall Time (s) |")
+        md_lines.append("| :--- | :--- | :--- | :--- | :--- |")
         for _, r in sub.iterrows():
-            md_lines.append(f"| {r['model']} | {r['params']:,} | {r['best_epoch']} | {r['train_time_s']} |")
+            md_lines.append(f"| {r['model']} | {r['device']} | {r['params']:,} | {r['best_epoch']} | {r['train_time_s']} |")
         md_lines.append("\n")
 
     with open(tables_md, 'w', encoding='utf-8') as f:
